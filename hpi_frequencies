@@ -1,4 +1,4 @@
-#!/usr/bin/sh
+#!/bin/sh
 #
 # Change the HPI frequencies according to sampling frequency setting
 #
@@ -14,6 +14,7 @@ showHelp=false
 modifyHpiFreqs=false
 showHpiFreqs=false
 selectHpiFreqGroup=false
+    echo "Description:"
 selectHpiFreqGroupError=false
 
 commandString=()
@@ -58,7 +59,7 @@ if [ $selectHpiFreqGroup ] ; then
 	hpiFreqGroup=3
 	modifyHpiFreqs=true
 	showHpiFreqs=true
-    elif
+    else
 	modifyHpiFreqs=false
 	selectHpiFreqGroupError=true
 	showHpiFreqs=false
@@ -67,17 +68,17 @@ fi
 
 if [ $selectHpiFreqGroupError ] ; then
     #show usage
+    echo " "
     echo "hpi_frequencies  -  Script to change HPI system Frequencies"
     echo "---------------" 
     echo " "
     echo "Usage:   ./hpi_frequencies [sFreq]"
     echo " "
-    echo "Description:"
-    echo "              Change the frequencies of the HPI coils."
-    echo "              If no \"sFreq\" value is specified, the script returns the "
-    echo "              current HPI frequencies for each of the 5 coils."
+    echo "Description:  Change the frequencies of the HPI coils (5 coils)."
+    echo "              \"sFreq\" is an optional argument."
+    echo "              If no \"sFreq\" value is specified, the script returns the current HPI frequencies for each coil."
     echo " "
-    echo "              sFreq valid values: 1000, 2000, 3000, 4000 or 5000"
+    echo "sFreq valid values: 1000, 2000, 3000, 4000 or 5000"
     echo " "
     
     exit 1
