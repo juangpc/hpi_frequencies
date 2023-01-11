@@ -1,0 +1,86 @@
+#!/usr/bin/sh
+#
+# Change the HPI frequencies according to sampling frequency setting
+#
+set -e 
+
+name="hpi_freq_script"
+host="127.0.0.1"
+service=collector
+command="telnet -4 $host $service"
+
+showHelp=false
+showHpiFreqs=false
+selectHpiFreqGroup=false
+
+#check if input argument present
+if [ $# -eq 0 ] ; then
+    showHpiFreqs=true
+else
+    sFreq=$1
+    selectHpiFreqGroup=true
+fi
+
+if [ $selectHpiFreqGroup ] ; then
+    if [ $sFreq -eq 1000 ] ; then
+	hpiFreqGroup=1
+    elif [ $sFreq -eq 2000 ] ; then
+	hpiFreqGroup=2
+    elif [ $sFreq -eq 3000 ] ; then
+	hpiFreqGroup=2
+    elif [ $sFreq -eq 4000 ] ; then
+	hpiFreqGroup=2
+    elif [ $sFreq -eq 5000 ] ; then
+	hpiFreqGroup=2
+    elif
+	showHelp=true
+	if
+	fi
+
+
+	if [ $# -eq 0 ] ; then
+		sFreq=$minSFreq
+	else
+		sFreq=$1
+	fi
+	if [ $sFreq -le 500 ] ; then
+		hpiFreq1=154.0
+		hpiFreq2=158.0
+		hpiFreq3=161.0
+		hpiFreq4=166.0
+		hpiFreq5=172.0
+	elif [ $sFreq -le 2000 ] ; then
+		hpiFreq1=293.0
+		hpiFreq2=307.0
+		hpiFreq3=314.0
+		hpiFreq4=321.0
+		hpiFreq5=328.0
+	elif [ $sFreq -le 3000 ] ; then
+		hpiFreq1=586.0
+		hpiFreq2=614.0
+		hpiFreq3=628.0
+		hpiFreq4=642.0
+		hpiFreq5=656.0
+	fi
+
+#execute command
+(
+echo "PASS homunculus122" 
+sleep 0.1
+echo "name $name"
+sleep 0.1
+echo "vara hpiFreq1 = $hpiFreq1"
+sleep 0.1
+echo "vara hpiFreq2 = $hpiFreq2"
+sleep 0.1
+echo "vara hpiFreq3 = $hpiFreq3"
+sleep 0.1
+echo "vara hpiFreq4 = $hpiFreq4"
+sleep 0.1
+echo "vara hpiFreq5 = $hpiFreq5"
+sleep 0.1
+echo "QUIT"
+sleep 0.1
+) | $command 
+
+exit 0
