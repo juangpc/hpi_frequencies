@@ -17,17 +17,6 @@ selectHpiFreqGroup=false
     echo "Description:"
 selectHpiFreqGroupError=false
 
-commandString=()
-
-#check input argumets 
-#if zero then show freqs. 
-#if 1 or more get and see if it is 1000, 2000, 3000, 4000 or 5000
-#if it is assign group.
-#then substitute.
-#if not part of those gropus. show help. 
-#
-
-
 #check if input argument present
 if [ $# -eq 0 ] ; then
     modifyHpiFreqs=false
@@ -104,8 +93,6 @@ if [ $modifyHpiFreqs ] ; then
 	hpiFreq4=642.0
 	hpiFreq5=656.0
     fi
-fi
-    #connect and change freqs
     (
 	echo "PASS homunculus122" 
 	sleep 0.1
@@ -143,7 +130,7 @@ if [ $showHpiFreqs ] ; then
     sleep 0.1
     echo "QUIT"
     sleep 0.1
-    ) | $command 
+    ) | $command | grep '200 hpi' | awk '{print $2 " = " $3 " Hz"}'
 fi
 
 exit 1
