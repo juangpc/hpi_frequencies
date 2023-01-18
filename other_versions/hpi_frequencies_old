@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# Change the HPI frequencies according to lowpass setting
+#
+host=localhost
+service=collector
+cptcp="/neuro/dacq/bin/cptcp $host -s $service"
+minpass=500
+if [ $# -eq 0 ] ; then
+   lowpass=$minpass
+else
+   lowpass=$1
+fi
+if [ $lowpass -le 500 ] ; then
+   $cptcp <<EOF
+pass homunculus122
+vara hpiFreq1 = 154.0
+vara hpiFreq2 = 158.0
+vara hpiFreq3 = 161.0
+vara hpiFreq4 = 166.0
+vara hpiFreq5 = 172.0
+quit
+EOF
+elif [ $lowpass -le 2000 ] ; then
+   $cptcp <<EOF
+pass homunculus122
+vara hpiFreq1 = 293.0
+vara hpiFreq2 = 307.0
+vara hpiFreq3 = 314.0
+vara hpiFreq4 = 321.0
+vara hpiFreq5 = 328.0
+quit
+EOF
+elif [ $lowpass -le 3000 ] ; then
+   $cptcp <<EOF
+pass homunculus122
+vara hpiFreq1 = 293.0
+vara hpiFreq2 = 307.0
+vara hpiFreq3 = 314.0
+vara hpiFreq4 = 321.0
+vara hpiFreq5 = 328.0
+quit
+EOF
+fi
+exit 0

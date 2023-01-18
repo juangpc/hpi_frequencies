@@ -1,0 +1,144 @@
+#!/bin/sh
+#
+# Change the HPI frequencies according to sampling frequency setting
+#
+set -e 
+
+name="hpi_freq_script"
+host="127.0.0.1"
+service=collector
+command="telnet -4 $host $service"
+
+sFreq=0
+showHelp=false
+modifyHpiFreqs=false
+showHpiFreqs=false
+selectHpiFreqGroup=false
+selectHpiFreqGroupError=false
+
+#check if input argument present
+if [ $# -eq 0 ] ; then
+    modifyHpiFreqs=false
+    selectHpiFreqGroup=false
+    showHpiFreqs=true
+else
+    sFreq=$1
+    selectHpiFreqGroup=true
+fi
+
+if [ $selectHpiFreqGroup ] ; then
+    if [ $sFreq -eq 1000 ] ; then
+	hpiFreqGroup=2
+	modifyHpiFreqs=true
+	showHpiFreqs=true
+    elif [ $sFreq -eq 2000 ] ; then
+	hpiFreqGroup=3
+	modifyHpiFreqs=true
+	showHpiFreqs=true
+    elif [ $sFreq -eq 3000 ] ; then
+	hpiFreqGroup=3
+	modifyHpiFreqs=true
+	showHpiFreqs=true
+    elif [ $sFreq -eq 4000 ] ; then
+	hpiFreqGroup=3
+	modifyHpiFreqs=true
+	showHpiFreqs=true
+    elif [ $sFreq -eq 5000 ] ; then
+	hpiFreqGroup=3
+	modifyHpiFreqs=true
+	showHpiFreqs=true
+    else
+	modifyHpiFreqs=false
+	selectHpiFreqGroupError=true
+	showHpiFreqs=false
+    fi
+fi
+
+if [ $selectHpiFreqGroupError ] ; then
+    #show usage
+    echo " "
+    echo "hpi_frequencies  -  Script to change HPI system Frequencies"
+    echo "---------------" 
+    echo " "
+    echo "Usage:   ./hpi_frequencies [sFreq]"
+    echo " "
+    echo "Description:  Change the frequencies of the HPI coils (5 coils)."
+    echo "              \"sFreq\" is an optional argument."
+    echo "              If no \"sFreq\" value is specified, the script returns the "
+    echo "              current HPI frequencies for each coil."
+    echo " "
+    echo "sFreq valid values: 1000, 2000, 3000, 4000 or 5000 (Hz)"
+    echo " "
+    
+    exit 1
+fi
+
+if [ $modifyHpiFreqs ] ; then 
+    if [ $hpiFreqGroup -eq 1 ] ; then
+	hpiFreq1=154.0
+	hpiFreq2=158.0
+	hpiFreq3=161.0
+	hpiFreq4=166.0
+	hpiFreq5=172.0
+    elif [ $hpiFreqGroup -eq 2 ] ; then
+	hpiFreq1=293.0
+	hpiFreq2=307.0
+	hpiFreq3=314.0
+	hpiFreq4=321.0
+	hpiFreq5=328.0
+    elif [ $hpiFreqGroup -eq 3 ] ; then
+	hpiFreq1=586.0
+	hpiFreq2=614.0
+	hpiFreq3=628.0
+	hpiFreq4=642.0
+	hpiFreq5=656.0
+    fi
+    (
+	echo "PASS homunculus122" 
+	sleep 0.1
+	echo "name $name"
+	sleep 0.1
+	echo "vara hpiFreq1 = $hpiFreq1"
+	sleep 0.1
+	echo "vara hpiFreq2 = $hpiFreq2"
+	sleep 0.1
+	echo "vara hpiFreq3 = $hpiFreq3"
+	sleep 0.1
+	echo "vara hpiFreq4 = $hpiFreq4"
+	sleep 0.1
+	echo "vara hpiFreq5 = $hpiFreq5"
+	sleep 0.1
+    ) | $command &>/dev/null
+    echo "blablablabla"
+fi
+
+if [ $showHpiFreqs ] ; then
+
+    echo " "
+    echo " HPI Frequencies: "
+    echo " ---------------- "
+    echo " "
+    #execute command
+    (
+    echo "PASS homunculus122" 
+    sleep 0.1
+    echo "name $name"
+    sleep 0.1
+    echo "vars hpiFreq1"
+    sleep 0.1
+    echo "vars hpiFreq2"
+    sleep 0.1
+    echo "vars hpiFreq3"
+    sleep 0.1
+    echo "vars hpiFreq4"
+    sleep 0.1
+    echo "vars hpiFreq5"
+    sleep 0.1
+    echo "QUIT"
+    sleep 0.1
+    ) | $command | grep '200 hpi' | awk '{print $2 " = " $3 " Hz"}'
+    echo " "
+fi
+
+exit 1
+
