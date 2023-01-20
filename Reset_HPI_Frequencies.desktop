@@ -1,0 +1,11 @@
+[Desktop Entry]
+
+Type=Application
+Name=Reset HPI Frequencies
+Comment=Reset HPI Frequencies
+Icon=megin-dacq-Acquisition
+Exec=/data/home/megacq/run_hpi_frequencies.sh
+StartupWMClass=Megacq
+Categories=Application;
+MimeType=application/x-fiff;
+Path=
